@@ -5,7 +5,7 @@ const chalk = require("chalk");
 const fs = require("fs");
 const moment = require("moment");
 require("./util/eventLoader")(client);
-
+console.log("asdasdasdadas")
 var prefix = ayarlar.prefix;
 
 const log = message => {
@@ -913,5 +913,5 @@ client.on("warn", e => {
 client.on("error", e => {
   console.log(chalk.bgRed(e.replace(regToken, "that was redacted")));
 });
-
+console.log("asdasdasdadas")
 client.login(ayarlar.token);
