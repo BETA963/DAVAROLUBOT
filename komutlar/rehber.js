@@ -7,10 +7,10 @@ exports.run = (client, message, params) => {
     .setColor('RANDOM')
     .setTimestamp()
     .setAuthor(message.author.username, message.author.avatarURL)
-    .addField('**Eğlence Komutları Özel Mesajlarda Kullanılamaz!**')
+    .addField('**Özelden rehber mi çağırıyorsun hadi amaa!**')
     return message.author.sendEmbed(ozelmesajuyari); }
     if (message.channel.type !== 'dm') {
-      client.channels.get("747881090471166064").send('**'+message.author+'** rehber çağırıyor'+" <@&557984515302096927>")
+      client.channels.get("747881090471166064").send('**'+message.author+'** rehber çağırıyor'+" <@&557984515302096927> \n"+"https://discord.com/channels/557981420782616607/"+message.channel.id+"/"+message.id)
       const sunucubilgi = new Discord.RichEmbed()
     .setAuthor(message.author.username + ' Rehber geliyor!!!!')
     .setColor('RANDOM')

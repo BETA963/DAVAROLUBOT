@@ -12,8 +12,8 @@ exports.run = (client, message, args) => {
   
   let user = message.mentions.users.first();
   let reason = args.slice(1).join(' ');
-  if (db.has(`mlog_${message.guild.id}`) === false) return message.channel.send('Mod log kanalı ayarlanmamış');
-  let modlog = message.guild.channels.get(db.fetch(`mlog_${message.guild.id}`).replace("<#", "").replace(">", ""));
+  if (db.has(`log_${message.guild.id}`) === false) return message.channel.send('Mod log kanalı ayarlanmamış');
+  let modlog = message.guild.channels.get(db.fetch(`log_${message.guild.id}`).replace("<#", "").replace(">", ""));
   if (message.mentions.users.size < 1) return message.channel.send('Lütfen banlamak istediğiniz üyeyi etiketleyin');
   if (reason.length < 1) return message.channel.send('Lütfen sebep giriniz');
   if (user.id === message.author.id) return message.channel.send('Kendinimi banlayacaksın?');

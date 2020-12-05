@@ -8,7 +8,8 @@ if (mesaj.length < 1) return message.reply('Yazmam için herhangi bir şey yazma
     .setColor("#0099ff")
     .setTimestamp()
     .setAuthor(message.guild.name,message.guild.iconURL)
-     .addField(message.author.username,mesaj)
+     //.addField(message.author.username,mesaj)
+.addField("KURALLAR",mesaj)
     message.delete()
 return message.channel.sendEmbed(ozelmesajuyari);
 };

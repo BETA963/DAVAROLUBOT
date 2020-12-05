@@ -5,15 +5,15 @@ exports.run = async (receivedMessage,  msg, args) => {
 let user = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]));
   if (!msg.guild.members.get(receivedMessage.user.id).hasPermission("MANAGE_MESSAGES")) return msg.channel.send('Gerekli izin yok')
 // if (user.hasPermission("BAN_MEMBERS")) return msg.channel.send(`Hata! \`${user.tag}\` isimli kullanıcı bu sunucuda yetkili.`)
-let log = await db.fetch(`mlog_${msg.guild.id}`)
+let log = await db.fetch(`log_${msg.guild.id}`)
   if (!log) return msg.channel.send("Ayarlı Bir Mute Log Kanalı Yok! Ayarlamak için \`-log #kanal\` !")
 var mod = msg.author
 var reason = args[1]
  let sebep = args.slice(2).join(' ')
-   let member = msg.guild.members.get(user.id);
   if (!user) return msg.channel.send('Kullanıcı Etiketlemedin')
  if (!reason) return msg.channel.send('Süre Belirtmedin! Seçeneklerin : 1s/1m/1h/1d/1w')
 if (!sebep) return msg.channel.send('Sebep Belirtmedin!')
+  let member = msg.guild.members.get(user.id);
 if (member.roles.has("592042647611244566")) return msg.channel.send('Dokunulmazlığı olan birini muteleyemezsin');
  
  

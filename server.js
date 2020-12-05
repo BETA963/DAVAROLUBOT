@@ -5,7 +5,7 @@ const chalk = require("chalk");
 const fs = require("fs");
 const moment = require("moment");
 require("./util/eventLoader")(client);
-console.log("asdasdasdadas")
+const talkedRecently = new Set();
 var prefix = ayarlar.prefix;
 
 const log = message => {
@@ -67,7 +67,7 @@ client.on("message", async msg => {
   const serverQueue = queue.get(msg.guild.id);
   let command = msg.content.toLowerCase().split(" ")[0];
 
-  if (command === "çal") {
+  if (command === "!çal") {
     const voiceChannel = msg.member.voiceChannel;
     if (!voiceChannel)
       return msg.channel.sendEmbed(
@@ -156,7 +156,7 @@ client.on("message", async msg => {
       }
       return handleVideo(video, msg, voiceChannel);
     }
-  } else if (command === "gir") {
+  } else if (command === "!gir") {
     return new Promise((resolve, reject) => {
       const voiceChannel = msg.member.voiceChannel;
       if (!voiceChannel || voiceChannel.type !== "voice")
@@ -166,7 +166,7 @@ client.on("message", async msg => {
         .then(connection => resolve(connection))
         .catch(err => reject(err));
     });
-  } else if (command === "geç") {
+  } else if (command === "!geç") {
     if (!msg.member.voiceChannel)
       if (!msg.member.voiceChannel)
         return msg.channel.sendEmbed(
@@ -182,7 +182,7 @@ client.on("message", async msg => {
       );
     serverQueue.connection.dispatcher.end("**Sıradaki Şarkıya Geçildi!**");
     return undefined;
-  } else if (command === "durdur") {
+  } else if (command === "!durdur") {
     if (!msg.member.voiceChannel)
       if (!msg.member.voiceChannel)
         return msg.channel.sendEmbed(
@@ -202,7 +202,7 @@ client.on("message", async msg => {
     serverQueue.songs = [];
     serverQueue.connection.dispatcher.end("**Şarkı Bitti**");
     return undefined;
-  } else if (command === "ses") {
+  } else if (command === "!ses") {
     if (!msg.member.voiceChannel)
       if (!msg.member.voiceChannel)
         return msg.channel.sendEmbed(
@@ -231,7 +231,7 @@ client.on("message", async msg => {
         .setTitle(`:loud_sound: Ses Seviyesi Ayarlanıyor: **${args[1]}**`)
         .setColor("RANDOM")
     );
-  } else if (command === "çalan") {
+  } else if (command === "!çalan") {
     if (!serverQueue)
       return msg.channel.sendEmbed(
         new Discord.RichEmbed()
@@ -253,7 +253,7 @@ client.on("message", async msg => {
           true
         )
     );
-  } else if (command === "sıra") {
+  } else if (command === "!sıra") {
     let index = 0;
     if (!serverQueue)
       return msg.channel.sendEmbed(
@@ -284,7 +284,7 @@ client.on("message", async msg => {
       );
     }
     return msg.channel.send("❎ | **Şarkı Çalmıyor Şu An**");
-  } else if (command === "devam") {
+  } else if (command === "!devam") {
     if (serverQueue && !serverQueue.playing) {
       serverQueue.playing = true;
       serverQueue.connection.dispatcher.resume();
@@ -461,6 +461,24 @@ client.unload = command => {
 };
 
 client.on("message", async msg => {
+  //await(user.addRole(mute.id));
+  if (msg.channel.id == "760586767488385064"){
+    let user = msg.guild.member(msg.author.id);
+  let mute = msg.guild.roles.find(r => r.name === "KATILDI");
+  if(!mute){
+      mute = await msg.guild.createRole({
+        name: "KATILDI",
+        color: "#000000",
+        permissions:[]
+      })
+        msg.guild.channels.get("760586348670353521").overwritePermissions(mute, {
+          SEND_MESSAGES: true,
+          ADD_REACTIONS: false
+        });
+    }
+    await(user.addRole(mute.id));
+  }
+    
   if (msg.guild.id != "747914371316973709") {
     if (msg.content.toLowerCase() === "sa") {
       if (msg.author.id == "444095448425299977") {
@@ -474,40 +492,36 @@ client.on("message", async msg => {
           "as, sonunda geldin bazıları çok boş yapmaya başlamıştı",
           "Aleyküm selam, sen geldiğine göre eğlence başlasın",
           "as, hg, sensiz buralar çok sıkıcı",
-          "Aleyküm selam reis, hoş geldin, nasılsın"
         ];
         var fact = Math.floor(Math.random() * facts.length);
-        msg.reply(facts[fact]);
+        msg.channel.send(facts[fact]);
       } else if (msg.member.roles.has("748933991180271747")) {
         var facts = [
           "Aleyküm selam, hoş geldin, bor reis",
           "as, sonunda geldin bazıları çok boş yapmaya başlamıştı",
           "Aleyküm selam, sen geldiğine göre eğlence başlasın",
           "as, hg, sensiz buralar çok sıkıcı",
-          "Aleyküm selam reis, hoş geldin, nasılsın"
         ];
         var fact = Math.floor(Math.random() * facts.length);
-        msg.reply(facts[fact]);
+        msg.channel.send(facts[fact]);
       } else if (msg.member.roles.has("750044775079477309")) {
         var facts = [
           "Aleyküm selam, hoş geldin, booster",
           "as, sonunda geldin bazıları çok boş yapmaya başlamıştı",
           "Aleyküm selam, sen geldiğine göre eğlence başlasın",
           "as, hg, sensiz buralar çok sıkıcı",
-          "Aleyküm selam reis, hoş geldin, nasılsın"
         ];
         var fact = Math.floor(Math.random() * facts.length);
-        msg.reply(facts[fact]);
+        msg.channel.send(facts[fact]);
       } else {
         var facts = [
           "Aleyküm selam, hoş geldin",
           "as",
           "Aleyküm selam",
           "as, hg",
-          "Aleyküm selam reis, hoş geldin"
         ];
         var fact = Math.floor(Math.random() * facts.length);
-        msg.reply(facts[fact]);
+        msg.channel.send(facts[fact]);
       }
     }
     if (msg.content.toLowerCase() === "selam") {
@@ -521,41 +535,37 @@ client.on("message", async msg => {
           "Aleyküm selam, hoş geldin, uranyum reis",
           "as, sonunda geldin bazıları çok boş yapmaya başlamıştı",
           "Aleyküm selam, sen geldiğine göre eğlence başlasın",
-          "as, hg, sensiz buralar çok sıkıcı",
-          "Aleyküm selam reis, hoş geldin, nasılsın"
+          "as, hg, sensiz buralar çok sıkıcı"
         ];
         var fact = Math.floor(Math.random() * facts.length);
-        msg.reply(facts[fact]);
+        msg.channel.send(facts[fact]);
       } else if (msg.member.roles.has("748933991180271747")) {
         var facts = [
           "Aleyküm selam, hoş geldin, bor reis",
           "as, sonunda geldin bazıları çok boş yapmaya başlamıştı",
           "Aleyküm selam, sen geldiğine göre eğlence başlasın",
-          "as, hg, sensiz buralar çok sıkıcı",
-          "Aleyküm selam reis, hoş geldin, nasılsın"
+          "as, hg, sensiz buralar çok sıkıcı"
         ];
         var fact = Math.floor(Math.random() * facts.length);
-        msg.reply(facts[fact]);
+        msg.channel.send(facts[fact]);
       } else if (msg.member.roles.has("750044775079477309")) {
         var facts = [
           "Aleyküm selam, hoş geldin, booster",
           "as, sonunda geldin bazıları çok boş yapmaya başlamıştı",
           "Aleyküm selam, sen geldiğine göre eğlence başlasın",
-          "as, hg, sensiz buralar çok sıkıcı",
-          "Aleyküm selam reis, hoş geldin, nasılsın"
+          "as, hg, sensiz buralar çok sıkıcı"
         ];
         var fact = Math.floor(Math.random() * facts.length);
-        msg.reply(facts[fact]);
+        msg.channel.send(facts[fact]);
       } else {
         var facts = [
           "Aleyküm selam, hoş geldin",
           "as",
           "Aleyküm selam",
           "as, hg",
-          "Aleyküm selam reis, hoş geldin"
         ];
         var fact = Math.floor(Math.random() * facts.length);
-        msg.reply(facts[fact]);
+        msg.channel.send(facts[fact]);
       }
     }
     if (msg.content.toLowerCase() === "sea") {
@@ -569,44 +579,43 @@ client.on("message", async msg => {
           "Aleyküm selam, hoş geldin, uranyum reis",
           "as, sonunda geldin bazıları çok boş yapmaya başlamıştı",
           "Aleyküm selam, sen geldiğine göre eğlence başlasın",
-          "as, hg, sensiz buralar çok sıkıcı",
-          "Aleyküm selam reis, hoş geldin, nasılsın"
+          "as, hg, sensiz buralar çok sıkıcı"
         ];
         var fact = Math.floor(Math.random() * facts.length);
-        msg.reply(facts[fact]);
+        msg.channel.send(facts[fact]);
       } else if (msg.member.roles.has("748933991180271747")) {
         var facts = [
           "Aleyküm selam, hoş geldin, bor reis",
           "as, sonunda geldin bazıları çok boş yapmaya başlamıştı",
           "Aleyküm selam, sen geldiğine göre eğlence başlasın",
-          "as, hg, sensiz buralar çok sıkıcı",
-          "Aleyküm selam reis, hoş geldin, nasılsın"
+          "as, hg, sensiz buralar çok sıkıcı"
         ];
         var fact = Math.floor(Math.random() * facts.length);
-        msg.reply(facts[fact]);
+        msg.channel.send(facts[fact]);
       } else if (msg.member.roles.has("750044775079477309")) {
         var facts = [
           "Aleyküm selam, hoş geldin, booster",
           "as, sonunda geldin bazıları çok boş yapmaya başlamıştı",
           "Aleyküm selam, sen geldiğine göre eğlence başlasın",
-          "as, hg, sensiz buralar çok sıkıcı",
-          "Aleyküm selam reis, hoş geldin, nasılsın"
+          "as, hg, sensiz buralar çok sıkıcı"
         ];
         var fact = Math.floor(Math.random() * facts.length);
-        msg.reply(facts[fact]);
+        msg.channel.send(facts[fact]);
       } else {
         var facts = [
           "Aleyküm selam, hoş geldin",
           "as",
           "Aleyküm selam",
-          "as, hg",
-          "Aleyküm selam reis, hoş geldin"
+          "as, hg"
         ];
         var fact = Math.floor(Math.random() * facts.length);
-        msg.reply(facts[fact]);
+        msg.channel.send(facts[fact]);
       }
     }
-    if (msg.content.toLowerCase() === "espiri yap") {
+    if (msg.content.toLowerCase() === "espri yap") {
+      if (talkedRecently.has(msg.author.id)) {
+            msg.channel.send("Sana her saniye espiri yapamam. - " + msg.author);
+    } else {
       msg.channel.send("tamam biraz düşüneyim").then(msgg => {
         msgg.delete(1000);
         var facts = [
@@ -650,16 +659,19 @@ client.on("message", async msg => {
           setTimeout(() => {
             msg.channel.send("sjsjsjsjs");
           }, 3100);
-        } else if (
-          facts[fact] ==
-          "- Bir gün 1 Alman 1 Fransız bide Temel uçağa binmişler... Temel osturmuş"
+        } else {
+if (facts[fact] == "- Bir gün 1 Alman 1 Fransız bide Temel uçağa binmişler... Temel osturmuş"
         ) {
+          msg.channel.send(facts[fact]);
+  msg.channel.send({
           files: [
             {
               attachment: "https://i.hizliresim.com/nfLzHo.png",
               name: "temelosturmuş.jpg"
             }
-          ];
+          ]
+  });
+        false
         } else {
           setTimeout(() => {
             msg.channel.send(facts[fact]);
@@ -681,7 +693,14 @@ client.on("message", async msg => {
             }, 3100);
           }
         }
+        }
       });
+      talkedRecently.add(msg.author.id);
+        setTimeout(() => {
+          // Removes the user from the set after a minute
+          talkedRecently.delete(msg.author.id);
+        }, 60000);
+    }
     }
     if (msg.content.toLowerCase() === "fıkra anlat") {
       msg.channel.send("tamam biraz düşüneyim").then(msgg => {
@@ -746,66 +765,7 @@ client.on("message", async msg => {
         msg.reply("espirimi neden çalıyorsun!!!!!");
       }
     }
-    if (msg.content.toLowerCase() === "beta") {
-      if (msg.guild.id == "557981420782616607") {
-        msg.channel.send(
-          "<@444095448425299977>" +
-            ", " +
-            msg.author +
-            " bu kişi seni çağarıyor."
-        );
-      }
-    }
-    if (msg.content.toLowerCase() === "beta abi") {
-      if (msg.guild.id == "557981420782616607") {
-        msg.channel.send(
-          "<@444095448425299977>" +
-            ", " +
-            msg.author +
-            " bu kişi seni çağarıyor."
-        );
-      }
-    }
-    if (msg.content.toLowerCase() === "can") {
-      if (msg.guild.id == "557981420782616607") {
-        msg.channel.send(
-          "<@444095448425299977>" +
-            ", " +
-            msg.author +
-            " bu kişi seni çağarıyor."
-        );
-      }
-    }
-    if (msg.content.toLowerCase() === "alperen") {
-      if (msg.guild.id == "557981420782616607") {
-        msg.channel.send(
-          "<@294513654668460032>" +
-            ", " +
-            msg.author +
-            " bu kişi seni çağarıyor."
-        );
-      }
-    }
-    if (msg.content.toLowerCase() === "lovepk") {
-      if (msg.guild.id == "557981420782616607") {
-        msg.channel.send(
-          "<@294513654668460032>" +
-            ", " +
-            msg.author +
-            " bu kişi seni çağarıyor."
-        );
-      }
-    }
-    if (msg.content.toLowerCase() === "alp") {
-      if (msg.guild.id == "557981420782616607") {
-        msg.channel.send(
-          "<@294513654668460032>" +
-            ", " +
-            msg.author +
-            " bu kişi seni çağarıyor."
-        );
-      }
-    }
+    
     if (msg.channel.type == "dm") {
       msg.author.send(
         "Dostum ben bir botum seninle konuşamam sahibim ile konuşmak istersen buraya onun profilini bırakıyorum " +
@@ -822,8 +782,6 @@ client.on("message", async msg => {
     }
   }
 });
-
-////////////////////////
 
 ////////////////////////
 const db = require("quick.db");
@@ -913,5 +871,5 @@ client.on("warn", e => {
 client.on("error", e => {
   console.log(chalk.bgRed(e.replace(regToken, "that was redacted")));
 });
-console.log("asdasdasdadas")
+
 client.login(ayarlar.token);

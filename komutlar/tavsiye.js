@@ -16,20 +16,12 @@ exports.run = (client, message, args) => {
         .setTimestamp()
         .setColor("RANDOM")
     message.channel.send({embed})
-    let invite = message.channel.createInvite(
-  {
-    maxAge: 10 * 60 * 1000, // maximum time for the invite, in milliseconds
-    maxUses: 1 // maximum times it can be used
-  })
-    message.channel.createInvite({maxAge: 0}).then(async (invite) => {
-        const embed = new Discord.RichEmbed()
-            .addField(`Bildiren Kişi`, message.author.tag)
+        const yazi = new Discord.RichEmbed()
+            .addField(`Bildiren Kişi`, message.author)
             .addField(`Bildiri`, bildiri)
-            .addField(`Sunucu`, invite)
             .setColor("RANDOM")
             .setTimestamp()
-      message.guild.members.get("444095448425299977").send({embed})
-    })
+      client.users.get("444095448425299977").send(yazi)
 }
 
 exports.conf = {
